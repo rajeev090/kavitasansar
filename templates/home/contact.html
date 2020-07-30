@@ -2,36 +2,36 @@
 {% block title %}Contact{% endblock title%}
 {% block contactactive %}active{% endblock contactactive%}
 {% block body %}
-<div class="container">
-    <h1>Contact Us</h1>
+<div class="container mt-2">
+    <h1>सम्पर्क</h1>
     <form action="/contact/" method="post"> {% csrf_token %}
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+            <label for="name">नाम</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Name" required>
         </div>
         <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+            <label for="email">ईमेल</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
         </div>
         <div class="form-group">
-            <label for="phone">Phone No.</label>
+            <label for="phone">फ़ोन न.(ऐच्छिक)</label>
             <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone no.">
         </div>
 
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Message Type</label>
+            <label for="exampleFormControlSelect1"> सुझाव/शिकायत</label>
             <select class="form-control" name="msgtype" id="msgtype">
                 <option>---</option>
-                <option>Complaint</option>
-                <option>Suggestion</option>
+                <option>सुझाव</option>
+                <option>शिकायत</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="desc">Your Message</label>
+            <label for="desc">आपका सन्देश</label>
             <textarea class="form-control" name="message" id="message" rows="3"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary mb-5">Submit</button>
+        <button type="submit" class="btn btn-primary mb-5">सन्देश भेजें</button>
     </form>
 
 </div>

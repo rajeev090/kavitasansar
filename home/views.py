@@ -1,6 +1,8 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from home.models import Contact
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from blog.models import Post
 
 
@@ -40,3 +42,71 @@ def search(request):
 
     params = {'allPosts': allPosts, 'query': query}
     return render(request, 'home/search.html', params)
+
+
+def handleSignup(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        pass1 = request.POST['pass1']
+        pass2 = request.POST['pass2']
+
+        # checks for errorneous inputs
+        if len(username) < 8:
+            messages.error(request, 'Username must be 8 or more characters')
+            return redirect('home')
+        if not username.isalnum():
+            messages.error(
+                request, 'Username must be alphanumeric. Should not contain special characters i.e. @#$%^&*<>!')
+            return redirect('home')
+        if pass1 != pass2:
+            messages.error(
+                request, 'Password and Confirm Password should be same')
+            return redirect('home')
+        if not fname.isalpha():
+            messages.error(
+                request, 'Name should not be alphanumeric. Should not contain special characters i.e. @#$%^&*<>!')
+            return redirect('home')
+        if not lname.isalpha():
+            messages.error(
+                request, 'Name should not be alphanumeric. Should not contain special characters i.e. @#$%^&*<>!')
+            return redirect('home')
+        # Create user
+
+        myuser = User.objects.create_user(username, email, pass1)
+        myuser.first_name = fname
+        myuser.last_name = lname
+        myuser.save()
+        messages.success(
+            request, "Your account has been sucessfully created")
+        return redirect('home')
+
+    else:
+        return HttpResponse('404 - Not Found')
+
+
+def handleLogin(request):
+    if request.method == 'POST':
+        # loginusername = request.POST['username']
+        loginusername = request.POST['loginusername']
+        loginpass = request.POST['loginpass']
+
+        user = authenticate(username=loginusername, password=loginpass)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Successfully Logged In")
+            return redirect("home")
+        else:
+            messages.error(request, "Invalid Credentials, Please try again")
+            return redirect('home')
+
+    return HttpResponse('404 - Not Found')
+
+
+def handleLogout(request):
+    logout(request)
+    messages.success(request, "Successfully Logged out")
+    return redirect('home')
