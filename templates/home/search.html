@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Search Results{% endblock title%}
+{% block blogactive %}active{% endblock blogactive%}
+{% block body %}
+<div class="container">
+    <div class="container">
+
+        <div class="row mb-2">
+            <h2> Search results:</h2>
+            <div>
+                {% if allPosts|length < 1 %}
+                <p>No search results</p>
+                <p>Your search: <b> {{query}} </b> - did not match any documents.<br>
+                <ul>Suggestions: <br>
+                    <li>Try different keywords.</li>
+                    <li>Try fewer key words</li>
+                    <li>Make sure there are no spaces before or after keywords</li>
+                    <li>Make sure all words are spelled correctly.</li>
+                </ul>
+                </p>
+                {% endif %}
+                {% for post in allPosts %}
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">रचनाकार: {{post.author}}</strong>
+                        <h3 class="mb-0">{{post.title}}</h3>
+                        <div class="mb-1 text-muted">{{post.date}}</div>
+                        <p class="card-text mb-auto">{{post.content| truncatechars:300}}...</p>
+                        <a href="/blog/{{post.slug}}" class="stretched-link">आगे पढ़िए ...</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock body%}
